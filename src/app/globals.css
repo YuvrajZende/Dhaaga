@@ -1,0 +1,648 @@
+@import "tailwindcss";
+
+/* ————————————————————————————————————————————————
+   Design tokens — ui.md §2 (dark, default)
+   ———————————————————————————————————————————————— */
+:root {
+  color-scheme: dark;
+
+  /* ground */
+  --bg-base: #08080d;
+  --bg-space: radial-gradient(1100px 640px at 50% -8%, #0d1024 0%, #08080d 62%);
+
+  /* text */
+  --text-primary: #f5f5f7;
+  --text-secondary: rgba(235, 235, 245, 0.62);
+  --text-tertiary: rgba(235, 235, 245, 0.34);
+
+  /* accents — gold = "the find", teal = "the path" */
+  --accent-find: #e9b757;
+  --accent-find-hover: #f2c46b;
+  --accent-find-soft: rgba(233, 183, 87, 0.14);
+  --accent-on-find: #1a1406;
+  --accent-path: #5fd4d0;
+  --accent-path-soft: rgba(95, 212, 208, 0.12);
+  --danger: #eb5545;
+
+  /* hairlines (materials separate — lines are the exception) */
+  --hairline: rgba(255, 255, 255, 0.1);
+  --hairline-soft: rgba(255, 255, 255, 0.06);
+
+  /* material fills */
+  --material-thick: rgba(20, 22, 32, 0.72);
+  --material-medium: rgba(18, 20, 30, 0.55);
+  --material-thin: rgba(255, 255, 255, 0.07);
+
+  /* elevation */
+  --shadow-float: 0 24px 64px rgba(0, 0, 0, 0.55);
+  --shadow-card: 0 12px 40px rgba(0, 0, 0, 0.35);
+}
+
+body {
+  background: var(--bg-base);
+  color: var(--text-primary);
+  min-height: 100vh;
+  font-optical-sizing: auto;
+  -webkit-text-size-adjust: 100%; /* no iOS font inflation */
+}
+
+/* every pointer target: no double-tap-zoom delay on touch */
+a,
+button,
+input,
+[role="button"] {
+  touch-action: manipulation;
+}
+
+/* iPhone home-indicator clearance */
+.pb-safe {
+  padding-bottom: max(2rem, env(safe-area-inset-bottom));
+}
+
+::selection {
+  background: var(--accent-find-soft);
+  color: var(--text-primary);
+}
+
+/* Apple focus discipline: gold ring, never the UA default */
+:focus-visible {
+  outline: 2px solid var(--accent-find);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ————————————————————————————————————————————————
+   Type roles — ui.md §3 (size-specific tracking)
+   ———————————————————————————————————————————————— */
+.type-display {
+  font-size: clamp(2.25rem, 6.5vw, 4rem);
+  line-height: 1.06;
+  letter-spacing: -0.025em;
+  font-weight: 600;
+}
+
+.type-title {
+  letter-spacing: -0.012em;
+  font-weight: 600;
+}
+
+.type-caption {
+  font-size: 0.75rem;
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+}
+
+/* the machine's voice — all system speech lives here */
+.mono-voice {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+}
+
+/* ————————————————————————————————————————————————
+   Materials — ui.md §4 (three weights, light-catching top edge)
+   ———————————————————————————————————————————————— */
+.material-thick {
+  background: var(--material-thick);
+  backdrop-filter: blur(40px) saturate(160%);
+  -webkit-backdrop-filter: blur(40px) saturate(160%);
+  border: 1px solid var(--hairline);
+  border-top-color: rgba(255, 255, 255, 0.28);
+  box-shadow: var(--shadow-float);
+}
+
+.material-medium {
+  background: var(--material-medium);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--hairline);
+  border-top-color: rgba(255, 255, 255, 0.22);
+  box-shadow: var(--shadow-card);
+}
+
+.material-thin {
+  background: var(--material-thin);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* interactive lift — interruptible transition, press feedback on :active */
+.material-interactive {
+  transition:
+    transform 100ms ease-out,
+    border-color 200ms ease,
+    box-shadow 300ms ease,
+    background-color 200ms ease;
+}
+.material-interactive:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+.material-interactive:active {
+  transform: scale(0.97);
+}
+
+/* ————————————————————————————————————————————————
+   Motion — ui.md §5 (materialize, don't fade · zero spinners)
+   ———————————————————————————————————————————————— */
+@keyframes materialize {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+.animate-materialize {
+  animation: materialize 0.5s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+
+/* the AI's typing shimmer — a gradient sweep, never a spinner */
+@keyframes voice-shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+.voice-active {
+  background: linear-gradient(
+    100deg,
+    var(--text-tertiary) 40%,
+    var(--text-secondary) 50%,
+    var(--text-tertiary) 60%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: voice-shimmer 1.6s linear infinite;
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.animate-rise {
+  animation: rise-in 0.4s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+
+/* ————————————————————————————————————————————————
+   Accessibility — ui.md §8
+   ———————————————————————————————————————————————— */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .material-thick,
+  .material-medium,
+  .material-thin {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: #14161f;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .material-thick,
+  .material-medium,
+  .material-thin {
+    background: #12141d;
+    border-color: rgba(255, 255, 255, 0.4);
+  }
+  :root {
+    --text-secondary: rgba(235, 235, 245, 0.85);
+    --text-tertiary: rgba(235, 235, 245, 0.6);
+  }
+}
+
+/* ————————————————————————————————————————————————
+   Landing (editorial) tokens — paper / navy ink / terracotta
+   Scoped `lp-` so the dark app routes keep their own tokens.
+   ———————————————————————————————————————————————— */
+:root {
+  --lp-paper: #faf8f2;
+  --lp-navy: #0b1f3a;
+  --lp-navy-soft: #1b3557;
+  --lp-forest: #172019;
+  --lp-forest-deep: #172b25; /* philosophy section ground */
+  --lp-terracotta: #ce4631;
+  --lp-orange: #ff4d2d;
+  --lp-sage: #dce8d9;
+  --lp-sage-deep: #b9cdb4;
+  --lp-surface: #f1ede4;
+  --lp-muted: #6b6b70;
+  --lp-border: #e7e3d8;
+  --lp-white: #ffffff;
+  --lp-hairline-ivory: rgba(250, 248, 242, 0.18);
+  --lp-sage-muted: rgba(220, 232, 217, 0.72);
+}
+
+.lp-root {
+  background-color: var(--lp-paper);
+  color: var(--lp-forest);
+  font-family: var(--font-host), "Host Grotesk", system-ui, sans-serif;
+}
+
+/* restrained paper grain — one tiled SVG, no live filters */
+.lp-grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='2' seed='9'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.42 0 0 0 0 0.38 0 0 0 0 0.30 0 0 0 0.045 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ————— scroll deck: sections rise and cover the previous one ————— */
+.lp-panel {
+  position: sticky;
+  top: 0;
+}
+/* A tall panel must NOT pin — it scrolls fully into view, and the NEXT
+   sticky sheet (higher z-index) rises over it. That covering sheet is what
+   creates the transition, so the tall panel stays in normal flow. */
+.lp-sheet {
+  border-radius: 2.5rem 2.5rem 0 0;
+  box-shadow: 0 -18px 50px rgba(23, 32, 25, 0.14);
+}
+/* tall story sections stay in normal flow — only viewport-height panels pin */
+@media (max-width: 1023px), (prefers-reduced-motion: reduce) {
+  .lp-panel {
+    position: relative;
+    top: auto;
+  }
+  .lp-sheet {
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
+
+/* focus discipline on light ground: navy ring, never the UA default */
+.lp-root :focus-visible {
+  outline: 2px solid var(--lp-navy);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+.lp-root ::selection {
+  background: rgba(206, 70, 49, 0.16);
+  color: var(--lp-forest);
+}
+
+.lp-eyebrow {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.6875rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.lp-meta {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+}
+
+/* editorial buttons — lift on hover, press on active, 160ms */
+.lp-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 10px;
+  font-weight: 550;
+  transition:
+    transform 160ms ease-out,
+    background-color 160ms ease-out,
+    box-shadow 160ms ease-out;
+}
+.lp-btn:hover {
+  transform: translateY(-1px);
+}
+.lp-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* type scale — serif for expressive display, grotesk for crisp sections.
+   Per-face tracking/leading: Instrument Serif keeps near-zero tracking,
+   Host Grotesk gets the tight editorial squeeze. */
+.lp-h1 {
+  font-family: var(--font-instrument), "Instrument Serif", Georgia, serif;
+  font-size: clamp(3rem, 6vw, 5rem);
+  line-height: 0.99;
+  letter-spacing: -0.012em;
+  font-weight: 400;
+}
+.lp-h2 {
+  font-family: var(--font-host), "Host Grotesk", system-ui, sans-serif;
+  font-size: clamp(2.35rem, 4.8vw, 4.25rem);
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+  font-weight: 500;
+}
+.lp-serif {
+  font-family: var(--font-instrument), "Instrument Serif", Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.008em;
+}
+.lp-h3 {
+  font-family: var(--font-host), "Host Grotesk", system-ui, sans-serif;
+  font-size: clamp(1.75rem, 3.2vw, 2.75rem);
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+  font-weight: 500;
+}
+
+/* hand-drawn underline beneath the hero's orange phrase */
+.lp-underline {
+  position: relative;
+  white-space: nowrap;
+}
+.lp-underline > svg {
+  position: absolute;
+  left: -2%;
+  bottom: -0.16em;
+  width: 104%;
+  height: 0.22em;
+  overflow: visible;
+}
+.lp-underline > svg path {
+  stroke-dasharray: 260;
+  stroke-dashoffset: 260;
+  animation: lp-underline-draw 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.5s forwards;
+}
+
+@keyframes lp-underline-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* section reveal on scroll — gentle, once */
+.lp-reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.lp-reveal.lp-reveal-shown {
+  opacity: 1;
+  transform: none;
+}
+
+/* relationship paths draw across when their card is revealed */
+.lp-reveal .path-draw {
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+.lp-reveal-shown .path-draw {
+  transform: scaleX(1);
+  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.25s;
+}
+.lp-reveal .path-draw-line {
+  stroke-dashoffset: 100;
+}
+.lp-reveal-shown .path-draw-line {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.2s;
+}
+
+/* hero entrance — masked line rise, load-time (scrub has no room at the top) */
+@keyframes lp-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.lp-rise {
+  animation: lp-rise 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes lp-line-in {
+  from {
+    transform: translateY(108%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+.lp-line-in {
+  animation: lp-line-in 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* ————— sticky overlapping card stack ————— */
+.lp-stack-card {
+  position: sticky;
+  box-shadow: 0 2px 10px rgba(23, 32, 25, 0.04), 0 28px 70px rgba(23, 32, 25, 0.1);
+}
+@media (max-width: 767px) {
+  .lp-stack-card {
+    position: relative;
+    top: auto !important; /* inline sticky offsets must not shift relative flow */
+    box-shadow: 0 2px 10px rgba(23, 32, 25, 0.05);
+  }
+}
+
+/* network graph: whole-canvas drift + per-node drift (lines end at
+   node centers, so a ±4px drift stays hidden beneath the discs) */
+.ng-drift {
+  animation: ng-drift 16s ease-in-out infinite alternate;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+@keyframes ng-drift {
+  from {
+    transform: translate(-2px, -3px);
+  }
+  to {
+    transform: translate(3px, 2px);
+  }
+}
+.ng-node {
+  transition: transform 200ms ease-out;
+  transform-box: fill-box;
+  transform-origin: center;
+  cursor: default;
+}
+.ng-node:hover {
+  transform: scale(1.06);
+}
+.ng-path-draw {
+  stroke-dasharray: 700;
+  stroke-dashoffset: 700;
+  animation: ng-path-draw 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.9s forwards;
+}
+@keyframes ng-path-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.ng-link-draw {
+  stroke-dashoffset: 1;
+  animation: ng-link-draw 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes ng-link-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.ng-pulse {
+  animation: ng-pulse 2.6s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+@keyframes ng-pulse {
+  0%,
+  100% {
+    opacity: 0.9;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+/* animated underline sweep on text links — background-image grows, no layout shift */
+.lp-link {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 2px;
+  transition: background-size 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.lp-link:hover {
+  background-size: 100% 2px;
+}
+
+/* ————— adaptive terracotta cursor ————— */
+.lp-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 70; /* above the fixed navbar (z-50) so the pill reads over it */
+  pointer-events: none;
+  border-radius: 999px;
+  background: var(--lp-orange);
+  transition:
+    width 220ms ease-out,
+    height 220ms ease-out,
+    background-color 220ms ease-out,
+    border-color 220ms ease-out,
+    opacity 200ms ease-out;
+  will-change: transform;
+  opacity: 0;
+}
+.lp-cursor-on {
+  opacity: 1;
+}
+.lp-cursor-pill {
+  background: rgba(255, 77, 45, 0.13);
+  border: 1.5px solid var(--lp-orange);
+}
+
+/* ————— tiny figures — walking limbs, CSS-driven ————— */
+/* view-box origin: limb joints are addressed in viewBox coordinates */
+.fig-limb {
+  transform-box: view-box;
+}
+.fig-limb-a {
+  animation: fig-swing 0.72s ease-in-out infinite alternate;
+}
+.fig-limb-b {
+  animation: fig-swing 0.72s ease-in-out infinite alternate-reverse;
+}
+@keyframes fig-swing {
+  from {
+    transform: rotate(-24deg);
+  }
+  to {
+    transform: rotate(24deg);
+  }
+}
+/* traverse along a ledge — distance/duration set per instance via vars */
+.fig-traverse {
+  animation: fig-traverse var(--fig-walk-dur, 18s) linear infinite alternate;
+}
+@keyframes fig-traverse {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(var(--fig-walk-dist, 160px));
+  }
+}
+
+/* ————— scroll-driven text wipe helpers ————— */
+.wipe-line-mask {
+  display: block;
+  overflow: hidden;
+}
+.wipe-line {
+  display: block;
+  will-change: transform;
+}
+
+/* reduced motion: everything static, nothing hidden */
+@media (prefers-reduced-motion: reduce) {
+  .lp-underline > svg path {
+    stroke-dashoffset: 0;
+    animation: none;
+  }
+  .lp-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .lp-rise {
+    animation: none;
+  }
+  .lp-line-in {
+    animation: none;
+  }
+  .ng-drift,
+  .ng-pulse {
+    animation: none;
+  }
+  .ng-path-draw {
+    stroke-dashoffset: 0;
+    animation: none;
+  }
+  .ng-link-draw {
+    stroke-dashoffset: 0;
+    animation: none;
+  }
+  .ng-node,
+  .lp-btn,
+  .lp-link,
+  .lp-cursor {
+    transition: none;
+  }
+  .fig-limb-a,
+  .fig-limb-b,
+  .fig-traverse {
+    animation: none;
+  }
+  .lp-reveal .path-draw,
+  .lp-reveal .path-draw-line {
+    transform: none;
+    stroke-dashoffset: 0;
+    transition: none;
+  }
+}

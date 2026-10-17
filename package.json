@@ -1,0 +1,50 @@
+{
+  "name": "happenstance-clone",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "test": "npx tsc tests/phase1-2.test.ts tests/benchmark.ts tests/phase3.test.ts tests/phase4.test.ts tests/imports.test.ts tests/security-isolation.test.ts tests/circle-places.test.ts --outDir dist-test --target es2022 --module NodeNext --moduleResolution NodeNext --skipLibCheck && node dist-test/tests/phase1-2.test.js && node dist-test/tests/phase3.test.js && node dist-test/tests/phase4.test.js && node dist-test/tests/imports.test.js && node dist-test/tests/security-isolation.test.js && node dist-test/tests/circle-places.test.js",
+    "test:places": "npx tsc tests/circle-places.test.ts --outDir dist-test --target es2022 --module NodeNext --moduleResolution NodeNext --skipLibCheck && node dist-test/tests/circle-places.test.js",
+    "test:places-e2e": "npx tsc tests/circle-places-e2e.test.ts --outDir dist-test --target es2022 --module NodeNext --moduleResolution NodeNext --skipLibCheck && node dist-test/tests/circle-places-e2e.test.js",
+    "test:security": "npx tsc tests/security-isolation.test.ts --outDir dist-test --target es2022 --module NodeNext --moduleResolution NodeNext --skipLibCheck && node dist-test/tests/security-isolation.test.js",
+    "test:phase3": "npx tsc tests/phase3.test.ts --outDir dist-test --target es2022 --module NodeNext --moduleResolution NodeNext --skipLibCheck && node dist-test/tests/phase3.test.js",
+    "test:phase4": "npx tsc tests/phase4.test.ts --outDir dist-test --target es2022 --module NodeNext --moduleResolution NodeNext --skipLibCheck && node dist-test/tests/phase4.test.js",
+    "test:imports": "npx tsc tests/imports.test.ts --outDir dist-test --target es2022 --module NodeNext --moduleResolution NodeNext --skipLibCheck && node dist-test/tests/imports.test.js",
+    "benchmark": "npx tsc tests/phase1-2.test.ts tests/benchmark.ts --outDir dist-test --target es2022 --module NodeNext --moduleResolution NodeNext --skipLibCheck && node dist-test/tests/benchmark.js",
+    "db:migrate": "npx tsx src/lib/db/migrate.ts"
+  },
+  "dependencies": {
+    "@huggingface/transformers": "^4.3.0",
+    "@neondatabase/serverless": "^1.1.0",
+    "arctic": "^3.7.0",
+    "clsx": "^2.1.1",
+    "dotenv": "^18.0.1",
+    "drizzle-orm": "^0.45.2",
+    "fflate": "^0.8.3",
+    "gsap": "^3.15.0",
+    "lucide-react": "^1.47.0",
+    "next": "16.3.5",
+    "pg": "^8.23.0",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "tailwind-merge": "^3.7.0",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/pg": "^8.23.1",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "drizzle-kit": "^0.31.10",
+    "eslint": "^9",
+    "eslint-config-next": "16.3.5",
+    "playwright-core": "^1.63.0",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}

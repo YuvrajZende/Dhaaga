@@ -1,0 +1,11 @@
+Notes:
+When exporting your connection data, that data will not be available until your archive is created.
+You can track the status in the Data privacy tab.
+
+First Name,Last Name,URL,Email Address,Company,Position,Connected On
+Sarah,Chen,https://www.linkedin.com/in/sarahchen,sarah.chen@benchmark.com,"Benchmark Capital, LLC",General Partner,15 Jan 2024
+Alex,Rivera,https://www.linkedin.com/in/alexrivera,,Synthetix AI,"Co-Founder, CEO",10 Sep 2023
+"David","Miller",https://www.linkedin.com/in/davidmiller,david@stripe.com,"Stripe, Inc.",Staff Software Engineer,02 Feb 2022
+Elena,Rostova,https://www.linkedin.com/in/erostova,elena@example.com,,Product Manager,20 Nov 2023
+,,https://www.linkedin.com/in/noname,,,Director,01 Jan 2024
+Maya,Lin,https://www.linkedin.com/in/mayalin,maya@design.co,Studio Lin,"Principal ""Design"" Lead",05 Jun 2024
